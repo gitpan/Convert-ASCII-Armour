@@ -6,7 +6,7 @@
 ## This code is free software; you can redistribute it and/or modify
 ## it under the same terms as Perl itself.
 ##
-## $Id: Armour.pm,v 1.2 2001/03/18 07:29:05 vipul Exp $
+## $Id: Armour.pm,v 1.3 2001/03/19 23:02:48 vipul Exp $
 
 package Convert::ASCII::Armour; 
 use strict;
@@ -15,7 +15,7 @@ use MIME::Base64;
 use Compress::Zlib qw(compress uncompress);
 use vars qw($VERSION);
 
-($VERSION)  = '$Revision: 1.2 $' =~ /\s(\d+\.\d+)\s/; 
+($VERSION)  = '$Revision: 1.3 $' =~ /\s(\d+\.\d+)\s/; 
 
 
 sub new { 
@@ -142,16 +142,31 @@ Convert::ASCII::Armour - Convert binary octets into ASCII armoured messages.
     my $message   = $converter->armour( 
                         Object   => "FOO RECORD", 
                         Headers  => { 
-                                        Table   => "FooBar", 
-                                        Version => "1.23", 
+                                      Table   => "FooBar", 
+                                      Version => "1.23", 
                                     },
                         Content  => { 
-                                        Key  => "0x8738FA7382", 
-                                        Name => "Zoya Hall",
-                                        Pic  => "....",  # gif 
+                                      Key  => "0x8738FA7382", 
+                                      Name => "Zoya Hall",
+                                      Pic  => "....",  # gif 
                                     },
                         Compress => 1,
                     );
+
+    print $message; 
+
+
+    -----BEGIN COMPRESSED FOO RECORD-----
+    Version: 1.23
+    Table: FooBar
+
+    eJwzZzA0Z/BNLS5OTE8NycgsVgCiRIVciIAJg6EJg0tiSaqhsYJvYlFy...
+    XnpOZl5qYlJySmpaekZmVnZObl5+QWFRcUlpWXlFZRWXAk7g6OTs4urm...
+    Fh4VGaWAR5ehkbGJqZm5hSUeNXWKDsoGcWpaGpq68bba0dWxtTVmDOYM...
+    NzuZ
+    =MxpZvjkrv5XyhkVCuXmsBQ==
+    -----END COMPRESSED FOO RECORD-----
+
 
     my $decoded   = $converter->unarmour( $message ) 
                      || die $converter->errstr();
@@ -162,19 +177,6 @@ Convert::ASCII::Armour - Convert binary octets into ASCII armoured messages.
 This module converts hashes of binary octets into ASCII messages suitable
 for transfer over 6-bit clean transport channels. The encoded ASCII
 resembles PGP's armoured messages, but are in no way compatible with PGP.
-
-Here's a sample encoded message: 
-
- -----BEGIN FOO RECORD-----
- Version: 1.23
- Table: FooBar
-
- eJwzZzA0Z/BNLS5OTE8NycgsVgCiRIVciIAJg6EJg0tiSaqhsYJvYlFyho6CkYGBoQWDoZkRg09+
- XnpOZl5qYlJySmpaekZmVnZObl5+QWFRcUlpWXlFZRWXAk7g6OTs4urm7uHp5e3j6+cfEBgUHBIa
- Fh4VGaWAR5ehkbGJqZm5hSUeNXWKDsoGcWpaGpq68bba0dWxtTVmDOYMfqW5SalFFpYWlsZGxgBW
- NzuZ
- =MxpZvjkrv5XyhkVCuXmsBQ==
- -----END FOO RECORD-----
 
 =head1 METHODS
 
@@ -211,24 +213,22 @@ the encoded message. Headers are encoded as RFC822 headers.
 
 A boolean parameter that forces armour() to compress the message body.
 
-=over
+=back
 
-=item B<unarmour()>
+=head2 B<unarmour()>
 
 Decodes an armoured ASCII message into the hash provided as argument
 to armour(). The hash contains Content, Object, and Headers.
 unarmour() performs several consistency checks and returns a non-true
 value on failure.
 
-=item B<errstr()>
+=head2 B<errstr()>
 
-Returns the error message on failure at unarmour().
+Returns the error message set by unarmour() on failure.
 
 =head1 AUTHOR
 
 Vipul Ved Prakash, E<lt>mail@vipul.netE<gt>
-
-=cut
 
 =head1 LICENSE
 
@@ -240,3 +240,4 @@ terms as Perl itself.
 
 MIME::Base64(3), Compress::Zlib(3), Digest::MD5(3)
 
+=cut

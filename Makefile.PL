@@ -6,7 +6,7 @@
 ## This code is free software; you can redistribute it and/or modify
 ## it under the same terms as Perl itself.
 ##
-## $Id: Makefile.PL,v 1.1.1.1 2001/03/18 07:27:39 vipul Exp $
+## $Id: Makefile.PL,v 1.2 2001/03/19 23:02:47 vipul Exp $
 
 use ExtUtils::MakeMaker;
 
