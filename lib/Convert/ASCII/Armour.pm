@@ -6,7 +6,7 @@
 ## This code is free software; you can redistribute it and/or modify
 ## it under the same terms as Perl itself.
 ##
-## $Id: Armour.pm,v 1.3 2001/03/19 23:02:48 vipul Exp $
+## $Id: Armour.pm,v 1.4 2001/03/19 23:15:09 vipul Exp $
 
 package Convert::ASCII::Armour; 
 use strict;
@@ -15,7 +15,7 @@ use MIME::Base64;
 use Compress::Zlib qw(compress uncompress);
 use vars qw($VERSION);
 
-($VERSION)  = '$Revision: 1.3 $' =~ /\s(\d+\.\d+)\s/; 
+($VERSION)  = '$Revision: 1.4 $' =~ /\s(\d+\.\d+)\s/; 
 
 
 sub new { 
@@ -126,6 +126,10 @@ sub decode_content {
 
     return \%data;
 }
+
+
+sub   armor {   armour (@_) }
+sub unarmor { unarmour (@_) }
 
 
 1;
